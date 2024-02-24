@@ -1,30 +1,35 @@
 document.addEventListener("DOMContentLoaded", function () {
-   
     // Hangman words array
     const words = ["JAVASCRIPT", "HTML", "CSS", "NODEJS", "PYTHON"];
-
-    // Select a random word from the array
-    let selectedWord = words[Math.floor(Math.random() * words.length)];
 
     // Get elements
     const hangmanWordElement = document.getElementById("hangmanWord");
     const hangmanLifesElement = document.getElementById("hangman-lifes");
     const alphabetButtons = document.querySelectorAll(".alph-btns button");
+    const gameMessageElement = document.getElementById("game-message");
 
     // Initialize game state
     let remainingLifes = 5;
     let guessedLetters = [];
+    let selectedWord = ""; // Initialize with an empty string
 
     // Display initial word
     updateHangmanWord();
 
     // Function to update the displayed hangman word
     function updateHangmanWord() {
+        // Select a random word if selectedWord is empty
+        if (!selectedWord) {
+            selectedWord = words[Math.floor(Math.random() * words.length)];
+        }
+
+        // Generate the display word by replacing unguessed letters with underscores
         const displayWord = selectedWord
             .split("")
             .map(letter => (guessedLetters.includes(letter) ? letter : "_"))
             .join(" ");
 
+        // Update hangman word element with the display word
         hangmanWordElement.innerHTML = displayWord;
 
         // Check if the player has won
@@ -41,45 +46,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to check if the guessed letter is correct
     function checkLetter(letter) {
         if (selectedWord.includes(letter)) {
+            // If the letter is in the word, add it to the guessed letters
             guessedLetters.push(letter);
             updateHangmanWord();
         } else {
+            // If the letter is not in the word, decrement remaining lifes
             remainingLifes--;
             updateLifes();
 
             // Check if the player has lost
             if (remainingLifes === 0) {
-                displayMessage("Leider verloren! Das Wort war: " + selectedWord, "danger");
+                displayMessage("Unfortunately lost! The word was: " + selectedWord, "danger");
+                setTimeout(function () {
+                    hideMessage();
+                }, 2000);
                 resetGame();
             }
         }
     }
-
-        // Get the hint button
-        const hintButton = document.querySelector('[data-bs-content="Bottom popover"]');
-
-        // Add event listener to the hint button
-        hintButton.addEventListener("click", function () {
-            // Check if there is at least one hidden letter
-            const hiddenLetters = selectedWord.split("").filter(letter => !guessedLetters.includes(letter));
-    
-            if (hiddenLetters.length > 0) {
-                // Reveal the first hidden letter and update the display
-                const letterToReveal = hiddenLetters[0];
-                guessedLetters.push(letterToReveal);
-                updateHangmanWord();
-            } else {
-                // If no hidden letters are left, the player loses a life
-                remainingLifes--;
-                updateLifes();
-    
-                // Check if the player has lost
-                if (remainingLifes === 0) {
-                    displayMessage("Game over! The word was: " + selectedWord, "danger");
-                    resetGame();
-                }
-            }
-        });
 
     // Function to update remaining lifes
     function updateLifes() {
@@ -97,8 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
             button.disabled = false;
         });
 
-        // Select a new random word
-        selectedWord = words[Math.floor(Math.random() * words.length)];
+        // Reset selectedWord to an empty string to force selection of a new word
+        selectedWord = "";
 
         // Update hangman word and remaining lifes
         updateHangmanWord();
@@ -107,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to display game messages
     function displayMessage(message, type = "info") {
-        const gameMessageElement = document.getElementById("game-message");
         gameMessageElement.innerHTML = message;
 
         // Clear previous classes
@@ -119,6 +102,18 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (type === "danger") {
             gameMessageElement.classList.add("alert-danger");
         }
+
+        // Add class to remove background color after 2 seconds
+        setTimeout(function () {
+            gameMessageElement.classList.add("message-hidden");
+        }, 2000);
+    }
+
+    // Function to hide game messages
+    function hideMessage() {
+        gameMessageElement.innerHTML = "";
+        gameMessageElement.classList.remove("alert-success", "alert-danger");
+        gameMessageElement.classList.remove("message-hidden");
     }
 
     // Add event listeners to alphabet buttons
@@ -129,4 +124,34 @@ document.addEventListener("DOMContentLoaded", function () {
             checkLetter(letter);
         });
     });
+
+    // 1. Keyboard support for letter selection
+    document.addEventListener("keydown", function(event) {
+        const keyPressed = event.key.toUpperCase(); // Convert pressed key to uppercase
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Define the alphabet
+
+        // Check if the pressed key is a letter and is not already guessed
+        if (alphabet.includes(keyPressed) && !guessedLetters.includes(keyPressed)) {
+            const correspondingButton = document.querySelector(`.alph-btns button[data-letter="${keyPressed}"]`);
+            if (correspondingButton) {
+                correspondingButton.click(); // Simulate click on the corresponding button
+            }
+        }
+    });
+
+    // 2. Display of the guessed letters
+    function updateGuessedLetters() {
+        const guessedLettersElement = document.getElementById("guessed-letters");
+        guessedLettersElement.textContent = guessedLetters.join(", ");
+    }
+    updateGuessedLetters();
+
+    // 3. Countdown display for the restart interval
+    function updateRestartCountdown(seconds) {
+        const restartCountdownElement = document.getElementById("restart-countdown");
+        restartCountdownElement.textContent = `Restarting the game in ${seconds} seconds.`;
+    }
+    setTimeout(function() {
+        updateRestartCountdown(3);
+    }, 3000);
 });
