@@ -9,91 +9,72 @@
   </head>
   <body id="bg">
 
-    <div class="d-flex">
-      <div class="p-2">
-        <a class="btn btn-dark" href="https://github.com/farukvrl">Github</a>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center p-3">
+      <a class="btn btn-dark" href="https://github.com/farukvrl" target="_blank">GitHub</a>
+      <div class="d-flex gap-2">
+        <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#changelogModal">Changelog</button>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#addWordModal">+ Add Word</button>
       </div>
-        </div>
-    
-    
+    </div>
 
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <!-- Modal for Adding Words -->
+    <div class="modal fade" id="addWordModal" tabindex="-1" aria-labelledby="addWordModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: rgba(0,0,0,0) !important;
-        border: none; !important">
-          <button class="btn btn-primary" type="button">Deutsch</button>
-          <button class="btn btn-light" type="button">Englisch</button>
-          <button class="btn btn-light" type="button">Spanisch</button>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addWordModalLabel">Add a New Word</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="addWordForm">
+              <div class="mb-3">
+                <label for="newWord" class="form-label">Word</label>
+                <input type="text" class="form-control" id="newWord" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Word</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
 
-  
-    
-    <div class="container text-center">
-
-      <div id="game-message" class="alert message-hidden" role="alert"></div>
-      
+    <!-- Modal for Changelog -->
+    <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="changelogModalLabel">Changelog</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul>
+              <li>Added Changelog Modal to display recent changes.</li>
+              <li>Fixed a bug where the game would restart prematurely.</li>
+              <li>Fixed random green/red message boxes without content.</li>
+              <li>Improved UI with additional features like GitHub link and reset buttons.</li>
+            </ul>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="fs-2 text-center">
-        <p><img src="./src/img/hangman.png" width="70px" alt=""> <span id="hangman-lifes"> <span>♥</span> <span>♥</span> <span>♥</span> <span>♥</span> <span>♥</span> </span> 
+    <div class="container text-center">
+      <div id="game-message" class="alert message-hidden" role="alert"></div>
+      <div class="fs-2">
+        <p>
+          <img src="./src/img/hangman.png" width="70px" alt=""> 
+          <span id="hangman-lifes"><span>♥</span> <span>♥</span> <span>♥</span> <span>♥</span> <span>♥</span></span>
         </p>
       </div>
-
-
-        <h1 class="pt-4 fs-1 text-center">Hangman       
-          <button type="button" class="btn btn-outline-dark" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
-          Hinweis 
-        </button>
-       </h1>
-        <div class="alph-btns text-center">
-
-            <button type="button" id="letter-a" class="btn btn-outline-dark">A</button>
-            <button type="button" id="letter-b" class="btn btn-outline-dark">B</button>
-            <button type="button" id="letter-c" class="btn btn-outline-dark">C</button>
-            <button type="button" id="letter-d" class="btn btn-outline-dark">D</button>
-            <button type="button" id="letter-e" class="btn btn-outline-dark">E</button>
-            <button type="button" id="letter-f" class="btn btn-outline-dark">F</button>
-            <button type="button" id="letter-g" class="btn btn-outline-dark">G</button>
-            <button type="button" id="letter-h" class="btn btn-outline-dark">H</button>
-            <button type="button" id="letter-i" class="btn btn-outline-dark">I</button>
-            <button type="button" id="letter-j" class="btn btn-outline-dark">J</button>
-            <button type="button" id="letter-k" class="btn btn-outline-dark">K</button>
-            <button type="button" id="letter-l" class="btn btn-outline-dark">L</button>
-            <button type="button" id="letter-m" class="btn btn-outline-dark">M</button>
-            <button type="button" id="letter-n" class="btn btn-outline-dark">N</button>
-            <button type="button" id="letter-o" class="btn btn-outline-dark">O</button>
-            <button type="button" id="letter-p" class="btn btn-outline-dark">P</button>
-            <button type="button" id="letter-q" class="btn btn-outline-dark">Q</button>
-            <button type="button" id="letter-r" class="btn btn-outline-dark">R</button>
-            <button type="button" id="letter-s" class="btn btn-outline-dark">S</button>
-            <button type="button" id="letter-t" class="btn btn-outline-dark">T</button>
-            <button type="button" id="letter-u" class="btn btn-outline-dark">U</button>
-            <button type="button" id="letter-v" class="btn btn-outline-dark">V</button>
-            <button type="button" id="letter-w" class="btn btn-outline-dark">W</button>
-            <button type="button" id="letter-x" class="btn btn-outline-dark">X</button>
-            <button type="button" id="letter-y" class="btn btn-outline-dark">Y</button>
-            <button type="button" id="letter-z" class="btn btn-outline-dark">Z</button>
-            <button type="button" id="letter-ae" class="btn btn-outline-dark">Ä</button>
-            <button type="button" id="letter-ue" class="btn btn-outline-dark">Ü</button>
-            <button type="button" id="letter-oe" class="btn btn-outline-dark">Ö</button>
-
-        </div>
-
-        <br />
-    
-        <div class="text-center" id="hangman-word">
-          <p class="fs-1" id="hangmanWord">
-          </p>
-        </div>
-
-
-
-
+      <h1 class="pt-4 fs-1">Hangman</h1>
+      <div class="alph-btns text-center"></div>
+      <div id="hangman-word" class="text-center">
+        <p class="fs-1" id="hangmanWord"></p>
+      </div>
     </div>
+
     <script src="./src/js/hangman.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
-
